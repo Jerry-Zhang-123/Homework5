@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fake MRICloud Sankey Diagram</title>
+  <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f7f7f7;
+      color: #222;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 40px auto;
+      padding: 20px;
+      background: white;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+      border-radius: 12px;
+    }
+    h1 {
+      margin-top: 0;
+      font-size: 28px;
+    }
+    p {
+      line-height: 1.5;
+    }
+    #sankey {
+      width: 100%;
+      height: 700px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Fake MRICloud Sankey Diagram</h1>
+    <p>
+      This webpage shows a Sankey diagram for fake MRICloud-style hierarchical brain volume data
+      for <strong>Type = 1</strong>, starting from <strong>Intracranial volume</strong>.
+    </p>
+    <div id="sankey"></div>
+  </div>
+
+  <script>
+    const labels = [
+      "Intracranial volume",
+      "Gray Matter", "White Matter", "CSF",
+      "Frontal Lobe", "Temporal Lobe", "Parietal Lobe", "Occipital Lobe",
+      "Frontal WM", "Temporal WM", "Ventricles", "Subarachnoid Space",
+      "Superior Frontal Gyrus", "Middle Frontal Gyrus",
+      "Superior Temporal Gyrus", "Middle Temporal Gyrus",
+      "Postcentral Gyrus", "Cuneus",
+      "Left Frontal WM", "Right Frontal WM",
+      "Left Temporal WM", "Right Temporal WM",
+      "Lateral Ventricle", "Third Ventricle", "Cortical CSF"
+    ];
+
+    const index = Object.fromEntries(labels.map((d, i) => [d, i]));
+
+    const source = [
+      index["Intracranial volume"], index["Intracranial volume"], index["Intracranial volume"],
+
+      index["Gray Matter"], index["Gray Matter"], index["Gray Matter"], index["Gray Matter"],
+      index["White Matter"], index["White Matter"],
+      index["CSF"], index["CSF"],
+
+      index["Frontal Lobe"], index["Frontal Lobe"],
+      index["Temporal Lobe"], index["Temporal Lobe"],
+      index["Parietal Lobe"], index["Occipital Lobe"],
+      index["Frontal WM"], index["Frontal WM"],
+      index["Temporal WM"], index["Temporal WM"],
+      index["Ventricles"], index["Ventricles"],
+      index["Subarachnoid Space"]
+    ];
+
+    const target = [
+      index["Gray Matter"], index["White Matter"], index["CSF"],
+
+      index["Frontal Lobe"], index["Temporal Lobe"], index["Parietal Lobe"], index["Occipital Lobe"],
+      index["Frontal WM"], index["Temporal WM"],
+      index["Ventricles"], index["Subarachnoid Space"],
+
+      index["Superior Frontal Gyrus"], index["Middle Frontal Gyrus"],
+      index["Superior Temporal Gyrus"], index["Middle Temporal Gyrus"],
+      index["Postcentral Gyrus"], index["Cuneus"],
+      index["Left Frontal WM"], index["Right Frontal WM"],
+      index["Left Temporal WM"], index["Right Temporal WM"],
+      index["Lateral Ventricle"], index["Third Ventricle"],
+      index["Cortical CSF"]
+    ];
+
+    const value = [
+      780, 593, 195,
+
+      330, 230, 130, 90,
+      315, 278,
+      100, 95,
+
+      180, 150,
+      120, 110,
+      130, 90,
+      160, 155,
+      140, 138,
+      80, 20,
+      95
+    ];
+
+    const data = [{
+      type: "sankey",
+      arrangement: "snap",
+      node: {
+        pad: 20,
+        thickness: 20,
+        line: {
+          color: "black",
+          width: 0.5
+        },
+        label: labels
+      },
+      link: {
+        source: source,
+        target: target,
+        value: value
+      }
+    }];
+
+    const layout = {
+      title: "Fake MRICloud Hierarchy Sankey Diagram (Type = 1)",
+      font: {
+        size: 12
+      },
+      margin: {
+        l: 20,
+        r: 20,
+        t: 60,
+        b: 20
+      }
+    };
+
+    Plotly.newPlot("sankey", data, layout, {responsive: true});
+  </script>
+</body>
+</html>
